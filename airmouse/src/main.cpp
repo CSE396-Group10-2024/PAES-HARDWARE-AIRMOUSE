@@ -3,7 +3,7 @@
 #include <SoftwareSerial.h>
 #include <BleMouse.h>
 
-uint8_t data[6], datas;
+uint8_t data[6];
 int16_t gyroX, gyroZ;
  
 int Sensitivity = 600;
