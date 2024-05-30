@@ -9,7 +9,7 @@ int16_t gyroX, gyroZ;
 int Sensitivity = 600;
 int delayi = 10;
 
-BleMouse bleMouse;
+BleMouse bleMouse = BleMouse("AirStick2");
 
 #define LEFT_BUTTON 15 // GPIO15 pin connected to button
 #define RIGHT_BUTTON 5 // GPIO5 pin connected to button
@@ -80,12 +80,6 @@ void setup() {
   bleMouse.begin();
   pinMode(LEFT_BUTTON, INPUT_PULLUP);
   pinMode(RIGHT_BUTTON, INPUT_PULLUP);
-  // pinMode(RED_LED, OUTPUT);
-  // pinMode(GREEN_LED, OUTPUT);
-
-  // digitalWrite(RED_LED, LOW);
-  // digitalWrite(GREEN_LED, LOW);
-
   delay(100);
 }
 
@@ -99,66 +93,14 @@ void loop() {
   gyroZ = gyroZ / Sensitivity  * 1;
 
   if(bleMouse.isConnected()){
-    // digitalWrite(GREEN_LED, HIGH);
-    // Serial.print(gyroX);
-    // Serial.print("   ");
-    // Serial.print(gyroZ);
-    // Serial.print("\r\n");
-    bleMouse.move(gyroZ, gyroX);
 
-    // Check button state to trigger left click
-    // if (lastState == LOW && currentState == HIGH) { // Change condition based on your button wiring
-    //   bleMouse.click(MOUSE_LEFT);
-    // }
+  bleMouse.move(gyroZ, gyroX);
 
-    // Check for button press (transition from LOW to HIGH)
-    // if (lastState == LOW && currentState == HIGH) {
-    //   // Button was just pressed
-    //   bleMouse.press(MOUSE_LEFT); // Hold down the left mouse button
-    //   buttonHeld = true; // Set button hold flag
-    // }
-
-    // // Check for button release (transition from HIGH to LOW)
-    // if (lastState == HIGH && currentState == LOW) {
-    //   // Button was just released
-    //   if (buttonHeld) {
-    //     // Release the left mouse button only if it was previously held down
-    //     bleMouse.release(MOUSE_LEFT);
-    //     buttonHeld = false; // Reset button hold flag
-    //   }
-    // }
-
-    // save the last state
-    // lastState = currentState;
-
-    // this logic is flawed, it will not work as expected
-
-    // if ((!digitalRead(LEFT_BUTTON)) && (!leftPressFlag)) {
-    //   // implement click without holding
-    //   // pressStartTime = millis(); // Record the start time of the press
-    //   // if ((millis() - pressStartTime) >= clickThreshold) {
-    //   //   leftPressFlag = true;
-    //   //   bleMouse.press(MOUSE_LEFT);
-    //   // } else {
-    //   //   bleMouse.click(MOUSE_LEFT);
-    //   // }
-
-    //     leftPressFlag = true;
-    //     bleMouse.press(MOUSE_LEFT);
-    // } else if ((digitalRead(LEFT_BUTTON)) && (leftPressFlag)) {
-    //   leftPressFlag = false;
-    //   bleMouse.release(MOUSE_LEFT);
-    // }
-
-    // if (!digitalRead(RIGHT_BUTTON)) {
-    //   bleMouse.click(MOUSE_RIGHT);
-    // }
-
-    // Check for left button click without holding
+  // Check for left button click without holding
   if (digitalRead(LEFT_BUTTON) == LOW && !leftPressFlag) {
     // Record the start time of the press
     pressStartTime = millis();
-    
+  
     // Check if the button is released quickly (click)
     if ((millis() - pressStartTime) < clickThreshold) {
       leftPressFlag = true;
